@@ -41,22 +41,22 @@ def convertSpriteSheetToGif(stickFile, row, col):
 
             frame = spriteSheet.crop(
                 (cropX, cropY, cropX+gifWidth, cropY+gifHeight))
-            frame.thumbnail((gifWidth, gifHeight), Image.ANTIALIAS)
-            offset_x = max((gifWidth - frame.size[0]) / 2, 0)
-            offset_y = max((gifHeight - frame.size[1]) / 2, 0)
-            pasteOffset = (offset_x, offset_y)
-            finalFrame = Image.new(mode='RGBA', size=(
-                gifWidth, gifHeight), color=color_white)
+            frame.save("splitFiles/{}.png".format(count))
+            alpha = frame.getchannel('A')
+            frame = frame.convert('RGB').convert(
+                'P', palette=Image.ADAPTIVE, colors=255)
 
-            finalFrame.paste(frame, pasteOffset)
-            finalFrame.save("splitFiles/{}.png".format(count))
-            output.append(finalFrame)
+            mask = Image.eval(alpha, lambda a: 255 if a <= 128 else 0)
+
+            frame.paste(255, mask)
+
+            frame.info['transparency'] = 255
+            output.append(frame)
             count += 1
-    output[0].save(os.path.dirname(os.path.abspath(__file__)) + "/outputs/" + datetime.datetime.now().strftime("%Y%m%d%H%M%f") + ".gif",
+    output[0].save(os.path.dirname(os.path.abspath(__file__)) + "/outputs/" + datetime.datetime.now().strftime("%Y%m%d%H%M%f") + ".gif", "GIF",
                    save_all=True,
                    append_images=output[1:],
                    duration=100,
-                   transparency=255,
                    loop=0)
     print("convert successfully")
 
