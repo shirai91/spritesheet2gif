@@ -19,7 +19,6 @@ def main():
 
 
 def convertSpriteSheetToGif(stickFile, row, col):
-    color_white = (255, 255, 255, 0)
     if(os.path.isdir(os.path.dirname(os.path.abspath(__file__)) + "/splitFiles") == True):
         shutil.rmtree(os.path.dirname(
             os.path.abspath(__file__)) + "/splitFiles")
@@ -41,19 +40,19 @@ def convertSpriteSheetToGif(stickFile, row, col):
 
             frame = spriteSheet.crop(
                 (cropX, cropY, cropX+gifWidth, cropY+gifHeight))
-            frame.save("splitFiles/{}.png".format(count))
+
             alpha = frame.getchannel('A')
+            alpha.save("splitFiles/alpha-{}.png".format(count))
             frame = frame.convert('RGB').convert(
                 'P', palette=Image.ADAPTIVE, colors=255)
 
             mask = Image.eval(alpha, lambda a: 255 if a <= 128 else 0)
-
             frame.paste(255, mask)
-
+            frame.save("splitFiles/{}.png".format(count))
             frame.info['transparency'] = 255
             output.append(frame)
             count += 1
-    output[0].save(os.path.dirname(os.path.abspath(__file__)) + "/outputs/" + datetime.datetime.now().strftime("%Y%m%d%H%M%f") + ".gif", "GIF",
+    output[0].save(os.path.dirname(os.path.abspath(__file__)) + "/outputs/" + datetime.datetime.now().strftime("%Y%m%d%H%M%f") + ".gif",
                    save_all=True,
                    append_images=output[1:],
                    duration=100,
