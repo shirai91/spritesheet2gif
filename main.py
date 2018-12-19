@@ -7,8 +7,8 @@ import datetime
 
 def main():
     print(str(sys.argv))
-    if(len(sys.argv) < 2):
-        print("please run file as follow python main.py sourceFile row col")
+    if(len(sys.argv) < 5):
+        print("Please read README to know how to run")
         return
     stickFile = sys.argv[1]
     row = int(sys.argv[2])
