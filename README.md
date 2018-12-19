@@ -8,10 +8,12 @@ You need have Pillow installed to run this project (lul)
 
 How to convert a spritesheet to gif
 
-Step 1 : put an image into inputs folder
+Step 1 : put an spritesheet into inputs folder (sprite animation should place in order from left to right, top to bottom)
 
 Step 2 : cd to source code folder, type
 
-> python main.py file_name_in_inputs_folder row col
+> python main.py file_name_in_inputs_folder row col frameLength
 
-Step 3 : Open outputs folder and see our gif
+frameLength is number of frames in spritesheet you want to capture.
+
+Step 3 : Open outputs folder and see your gif
